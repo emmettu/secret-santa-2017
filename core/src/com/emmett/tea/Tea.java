@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class Tea extends ApplicationAdapter {
 
 	public GameManager manager;
+	Music music;
 
 	@Override
 	public void create () {
@@ -16,7 +17,7 @@ public class Tea extends ApplicationAdapter {
 		manager.pushState(new HowToPlayState(manager));
 		manager.pushState(new TitleState());
 
-		Music music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
+		music = Gdx.audio.newMusic(Gdx.files.internal("music.mp3"));
 		music.setLooping(true);
 		music.play();
 	}
@@ -30,5 +31,6 @@ public class Tea extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		manager.cleanup();
+		music.dispose();
 	}
 }

@@ -20,7 +20,7 @@ public class TeaData {
 	}
 
 	public void addSugar(double sugar) {
-		this.sugar += milk;
+		this.sugar += sugar;
 	}
 
 	public void setMilk(double milk) {
