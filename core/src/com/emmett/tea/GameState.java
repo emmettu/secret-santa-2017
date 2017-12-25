@@ -1,9 +1,13 @@
 package com.emmett.tea;
 
-public abstract class GameState {
+public interface GameState {
 
-	public abstract void run();
+	void run();
 
-	public abstract void remove();
+	void remove();
+
+	boolean isOver();
+
+	void init();
 
 }

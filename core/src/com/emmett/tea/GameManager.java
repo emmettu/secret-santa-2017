@@ -8,6 +8,7 @@ public class GameManager {
 
 	public void pushState(GameState state) {
 		stack.push(state);
+		state.init();
 	}
 
 	public GameState popState() {
@@ -15,6 +16,10 @@ public class GameManager {
 	}
 
 	public void run() {
+		if (stack.peek().isOver()) {
+			stack.pop().remove();
+			stack.peek().init();
+		}
 		stack.peek().run();
 	}
 
