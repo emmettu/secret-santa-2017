@@ -27,7 +27,12 @@ public class PlayState extends BaseState {
 		pour.setPosition(270, 150);
 		pour.setVisible(false);
 
+		final Image sugarPour = new Image(new Texture("sugarpour.png"));
+		sugarPour.setPosition(270, 195);
+		sugarPour.setVisible(false);
+
 		stage.addActor(pour);
+		stage.addActor(sugarPour);
 		stage.addActor(teaMug);
 
 		milk.addListener(
@@ -49,6 +54,25 @@ public class PlayState extends BaseState {
 				}
 		);
 
+		sugar.addListener(
+				new InputListener() {
+					@Override
+					public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+						sugar.setVisible(false);
+						sugarPour.setVisible(true);
+						tea.receivingSugar();
+						return true;
+					}
+
+					@Override
+					public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
+						sugar.setVisible(true);
+						sugarPour.setVisible(false);
+						tea.notReceivingSugar();
+					}
+				}
+		);
+
 		earlGrey.addListener(
 				new ClickListener() {
 					@Override
@@ -56,6 +80,17 @@ public class PlayState extends BaseState {
 						mug.setVisible(false);
 						teaMug.setVisible(true);
 						tea.setType(TeaType.EARL_GREY);
+					}
+				}
+		);
+
+		irish.addListener(
+				new ClickListener() {
+					@Override
+					public void clicked(InputEvent event, float x, float y) {
+						mug.setVisible(false);
+						teaMug.setVisible(true);
+						tea.setType(TeaType.IRISH_BREAKFAST);
 					}
 				}
 		);
@@ -83,9 +118,15 @@ public class PlayState extends BaseState {
 		TeaData desired = randomTea();
 
 		Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
-		final Label label = new Label("Try making an " + desired.getType() + "\nwith " + amountPhrase(desired.milkLevel()) + " milk", style);
+		final Label label = new Label("Try making an "
+				+ desired.getType()
+				+ "\nwith "
+				+ amountPhrase(desired.milkLevel())
+				+ " milk and a\n"
+				+ amountPhrase(desired.sugarLevel())
+				+ " sugar", style);
 		label.setFontScale(2);
-		label.setPosition(150, 250);
+		label.setPosition(150, 270);
 		stage.addActor(label);
 
 		Global.desiredTea = desired;
@@ -105,7 +146,10 @@ public class PlayState extends BaseState {
 	public void run() {
 		super.run();
 		if (tea.isReceivingMilk()) {
-			tea.addMilk(Gdx.graphics.getDeltaTime() * 15);
+			tea.addMilk(Gdx.graphics.getDeltaTime() * 10);
+		}
+		if (tea.isReceivingSugar()) {
+			tea.addSugar(Gdx.graphics.getDeltaTime() * 5);
 		}
 	}
 
@@ -113,6 +157,7 @@ public class PlayState extends BaseState {
 		Random random = new Random();
 		TeaData data = new TeaData();
 		data.setMilk(random.nextInt(51));
+		data.setSugar(random.nextInt(51));
 		data.setType(TeaType.values()[random.nextInt(TeaType.values().length - 1)]);
 		return data;
 	}

@@ -12,6 +12,8 @@ public abstract class BaseState implements GameState {
 	protected Image mug;
 	protected Image englishBreakfast;
 	protected Image earlGrey;
+	protected Image sugar;
+	protected Image irish;
 	protected boolean over;
 
 	public BaseState() {
@@ -22,19 +24,25 @@ public abstract class BaseState implements GameState {
 
 		englishBreakfast = new Image(new Texture("englishbreakfast.png"));
 		earlGrey = new Image(new Texture("earlgrey.png"));
+		irish = new Image(new Texture("irishbreakfast.png"));
 
 		englishBreakfast.setPosition(70, 400);
 		earlGrey.setPosition(295, 400);
 
 		mug = new Image(new Texture("mug.png"));
+		sugar = new Image(new Texture("sugar.png"));
 
 		mug.setPosition(250, 60);
 		milk.setPosition(10, 100);
+		sugar.setPosition(120, 50);
+		irish.setPosition(530, 120);
 		stage.addActor(background);
 		stage.addActor(mug);
 		stage.addActor(milk);
 		stage.addActor(englishBreakfast);
 		stage.addActor(earlGrey);
+		stage.addActor(irish);
+		stage.addActor(sugar);
 	}
 
 	@Override

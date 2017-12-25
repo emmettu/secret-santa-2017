@@ -19,7 +19,7 @@ public class ScoreState extends BaseState {
 
 		Label.LabelStyle style = new Label.LabelStyle(new BitmapFont(), Color.BLACK);
 		int score = getScore();
-		Label label = new Label(String.format(getMessage(score), score), style);
+		Label label = new Label(getMessage(score), style);
 		label.setFontScale(2);
 		label.setPosition(150, 250);
 		stage.addActor(label);
@@ -33,9 +33,10 @@ public class ScoreState extends BaseState {
 			return 0;
 		}
 
-		double raw = (Math.max(actual.milkLevel(), desired.milkLevel()) + 1) / (Math.min(actual.milkLevel(), desired.milkLevel()) + 1);
+		double rawM = (Math.max(actual.milkLevel(), desired.milkLevel()) + 1) / (Math.min(actual.milkLevel(), desired.milkLevel()) + 1);
+		double rawS = (Math.max(actual.sugarLevel(), desired.sugarLevel()) + 1) / (Math.min(actual.sugarLevel(), desired.sugarLevel()) + 1);
 
-		return (int) Math.ceil(100 / raw);
+		return (int) (Math.ceil(100 / (rawM + rawS)) * 2);
 	}
 
 	private String getMessage(int score) {
@@ -43,15 +44,20 @@ public class ScoreState extends BaseState {
 		TeaData desired = Global.desiredTea;
 		if (actual.getType() != desired.getType()) {
 			return "You used the wrong tea!";
-		} else if (score >= 100) {
+		} else if (score >= 200) {
 			return "Perfect score!\nThanks for playing,\nMerry Christmas!";
-		} else if (actual.milkLevel() < desired.milkLevel()) {
-			return "You scored %s!\nYou had too little milk.";
-		} else if (actual.milkLevel() > desired.milkLevel()) {
-			return "You scored %s!\nYou had too much milk.";
-		} else {
-			return "You scored %s!\nYou had the perfect amount of milk!";
 		}
+		return getAmountMessage(score);
+	}
+
+	private String getAmountMessage(int score) {
+		TeaData actual = Global.actualTea;
+		TeaData desired = Global.desiredTea;
+
+		String sugar = actual.sugarLevel() > desired.sugarLevel() ? "too much sugar" : "too little sugar";
+		String milk = actual.milkLevel() > desired.milkLevel() ? "too much milk" : "too little milk";
+
+		return String.format("You scored %s\nYou had %s\nand %s", score, sugar, milk);
 	}
 
 }

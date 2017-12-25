@@ -4,6 +4,7 @@ public enum TeaType {
 
 	ENGLISH_BREAKFAST("English Breakfast"),
 	EARL_GREY("Earl Grey"),
+	IRISH_BREAKFAST("Irish Breakfast"),
 	HOT_WATER("Hot Water");
 
 	private String name;
